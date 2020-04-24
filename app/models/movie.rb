@@ -1,7 +1,7 @@
 class Movie < ApplicationRecord
-  has_many :actors_movies
-  has_many :producers_movies
-  has_many :directors_movies
+  has_many :actors_movies, dependent: :destroy
+  has_many :producers_movies, dependent: :destroy
+  has_many :directors_movies, dependent: :destroy
 
   has_many :casting, through: :actors_movies, source: :person
   has_many :directors, through: :directors_movies, source: :person
