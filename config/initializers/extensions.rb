@@ -1,0 +1,1 @@
+Dir["#{Rails.root}/app/lib/core_ext/*.rb"].each { |file| require file }

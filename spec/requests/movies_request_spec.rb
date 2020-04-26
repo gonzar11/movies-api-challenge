@@ -55,7 +55,7 @@ RSpec.describe "Movies", type: :request do
 
       it 'creates a movie' do
         expect(json['title']).to eq('Pulp Fiction')
-        expect(json['release_year']).to eq(1995)
+        expect(json['release_year']).to eq(1995.to_roman)
       end
 
       it 'returns status code 201' do
@@ -84,7 +84,7 @@ RSpec.describe "Movies", type: :request do
     context 'when the record exists' do
       it 'updates the record' do
         expect(json['title']).to eq('Inception')
-        expect(json['release_year']).to eq(2010)
+        expect(json['release_year']).to eq(2010.to_roman)
       end
 
       it 'returns status code 200' do
