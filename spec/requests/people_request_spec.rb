@@ -74,22 +74,33 @@ RSpec.describe "Person", type: :request do
     end
   end
 
-  # # Test suite for PUT /todos/:id
-  # describe 'PUT /todos/:id' do
-  #   let(:valid_attributes) { { title: 'Shopping' } }
+  describe 'PUT /people/:id' do
+    let(:valid_attributes) { { first_name: 'Quentin', last_name: 'Tarantino' } }
+    before { put "/people/#{person_id}", params: valid_attributes }
 
-  #   context 'when the record exists' do
-  #     before { put "/todos/#{todo_id}", params: valid_attributes }
+    context 'when the record exists' do
+      it 'updates the record' do
+        expect(json['first_name']).to eq('Quentin')
+        expect(json['last_name']).to eq('Tarantino')
+      end
 
-  #     it 'updates the record' do
-  #       expect(response.body).to be_empty
-  #     end
+      it 'returns status code 200' do
+        expect(response).to have_http_status(200)
+      end
+    end
 
-  #     it 'returns status code 204' do
-  #       expect(response).to have_http_status(204)
-  #     end
-  #   end
-  # end
+    context 'when the record does not exists' do
+      let(:person_id) { 999 }
+
+      it 'returns status code 404' do
+        expect(response).to have_http_status(404)
+      end
+
+      it 'returns a not found message' do
+        expect(response.body).to match(/Couldn't find Person/)
+      end
+    end
+  end
 
   describe 'DELETE /people/:id' do
     before { delete "/people/#{person_id}" }
