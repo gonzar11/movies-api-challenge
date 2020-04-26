@@ -3,11 +3,14 @@ require 'rails_helper'
 RSpec.describe "Movies", type: :request do
   let!(:movies) { create_list(:movie, 5) }
   let(:movie_id) { movies.first.id }
+  let(:user) { create(:user) }
+  let(:headers) { valid_headers }
 
   describe 'GET /movies' do
     before { get '/movies' }
 
     it 'returns movies' do
+      puts headers
       expect(json).not_to be_empty
       expect(json.size).to eq(5)
     end
@@ -45,10 +48,10 @@ RSpec.describe "Movies", type: :request do
   end
 
   describe 'POST /movies' do
-    let(:valid_attributes) { { title: 'Pulp Fiction', release_year: 1995 } }
+    let(:valid_attributes) { { title: 'Pulp Fiction', release_year: '1995' } }
 
     context 'when the request is valid' do
-      before { post '/movies', params: valid_attributes }
+      before { post '/movies', params: valid_attributes, headers: headers }
 
       it 'creates a movie' do
         expect(json['title']).to eq('Pulp Fiction')
@@ -61,7 +64,7 @@ RSpec.describe "Movies", type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post '/movies', params: { title: '' } }
+      before { post '/movies', params: { title: '' }, headers: headers }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -76,7 +79,7 @@ RSpec.describe "Movies", type: :request do
 
   describe 'PUT /movies/:id' do
     let(:valid_attributes) { { title: 'Inception', release_year: 2010 } }
-    before { put "/movies/#{movie_id}", params: valid_attributes }
+    before { put "/movies/#{movie_id}", params: valid_attributes, headers: headers }
 
     context 'when the record exists' do
       it 'updates the record' do
@@ -103,7 +106,7 @@ RSpec.describe "Movies", type: :request do
   end
 
   describe 'DELETE /todos/:id' do
-    before { delete "/movies/#{movie_id}" }
+    before { delete "/movies/#{movie_id}", headers: headers }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)

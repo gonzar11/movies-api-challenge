@@ -3,6 +3,8 @@ require 'rails_helper'
 RSpec.describe "Person", type: :request do
   let!(:people) { create_list(:person, 5) }
   let(:person_id) { people.first.id }
+  let(:user) { create(:user) }  
+  let(:headers) { valid_headers }
 
   describe 'GET /people' do
     before { get '/people' }
@@ -48,7 +50,7 @@ RSpec.describe "Person", type: :request do
     let(:valid_attributes) { { first_name: 'Gonzalo', last_name: 'Ricco', aliases: 'gr'  } }
 
     context 'when the request is valid' do
-      before { post '/people', params: valid_attributes }
+      before { post '/people', params: valid_attributes, headers: headers }
 
       it 'creates a person' do
         expect(json['first_name']).to eq('Gonzalo')
@@ -61,7 +63,7 @@ RSpec.describe "Person", type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post '/people', params: { first_name: '', last_name: '' } }
+      before { post '/people', params: { first_name: '', last_name: '' }, headers: headers }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -76,7 +78,7 @@ RSpec.describe "Person", type: :request do
 
   describe 'PUT /people/:id' do
     let(:valid_attributes) { { first_name: 'Quentin', last_name: 'Tarantino' } }
-    before { put "/people/#{person_id}", params: valid_attributes }
+    before { put "/people/#{person_id}", params: valid_attributes, headers: headers }
 
     context 'when the record exists' do
       it 'updates the record' do
@@ -103,7 +105,7 @@ RSpec.describe "Person", type: :request do
   end
 
   describe 'DELETE /people/:id' do
-    before { delete "/people/#{person_id}" }
+    before { delete "/people/#{person_id}", headers: headers }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)
