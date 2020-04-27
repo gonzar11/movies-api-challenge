@@ -58,3 +58,5 @@ gem 'pry-nav'
 
 gem 'bcrypt', '~> 3.1'
 gem 'jwt'
+
+gem 'rack-cors'
