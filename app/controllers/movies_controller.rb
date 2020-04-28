@@ -9,9 +9,7 @@ class MoviesController < ApplicationController
 
   def create
     @movie = Movie.new(movie_params)
-    @movie.casting_ids = params[:casting_ids] if params[:casting_ids]
-    @movie.director_ids = params[:director_ids] if params[:director_ids]
-    @movie.producer_ids = params[:producer_ids] if params[:producer_ids]
+    assign_person_roles_to_movie
     @movie.save!
 
     json_response(@movie, :created)
@@ -26,9 +24,7 @@ class MoviesController < ApplicationController
     #RecordNotFound when any ids are not valid. I need to leave the db in a consistent state.
     Movie.transaction do
       @movie.update!(movie_params)
-      @movie.casting_ids = params[:casting_ids] if params[:casting_ids]
-      @movie.director_ids = params[:director_ids] if params[:director_ids]
-      @movie.producer_ids = params[:producer_ids] if params[:producer_ids]
+      assign_person_roles_to_movie
     end
     
     json_response(@movie)
@@ -47,5 +43,11 @@ class MoviesController < ApplicationController
 
   def set_movie
     @movie = Movie.find(params[:id])
+  end
+
+  def assign_person_roles_to_movie
+    @movie.casting_ids = params[:casting] if params[:casting]
+    @movie.director_ids = params[:directors] if params[:directors]
+    @movie.producer_ids = params[:producers] if params[:producers]
   end
 end
