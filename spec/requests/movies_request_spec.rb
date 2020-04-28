@@ -29,6 +29,11 @@ RSpec.describe "Movies", type: :request do
         expect(json['id']).to eq(movie_id)
       end
 
+      it 'returns release year in both decimal and roman format' do
+        expect(json['release_year']).to eq(movies.first.release_year)
+        expect(json['roman_release_year']).to eq(movies.first.release_year.to_roman)
+      end
+
       it 'returns status code 200' do
         expect(response).to have_http_status(200)
       end
@@ -55,7 +60,7 @@ RSpec.describe "Movies", type: :request do
 
       it 'creates a movie' do
         expect(json['title']).to eq('Pulp Fiction')
-        expect(json['release_year']).to eq(1995.to_roman)
+        expect(json['release_year']).to eq(1995)
       end
 
       it 'returns status code 201' do
@@ -84,7 +89,7 @@ RSpec.describe "Movies", type: :request do
     context 'when the record exists' do
       it 'updates the record' do
         expect(json['title']).to eq('Inception')
-        expect(json['release_year']).to eq(2010.to_roman)
+        expect(json['release_year']).to eq(2010)
       end
 
       it 'returns status code 200' do
