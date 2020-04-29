@@ -1,24 +1,85 @@
-# README
+# Movies API Challenge!
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### Ruby version
+2.6.5
 
-Things you may want to cover:
+### Rails version
+6.0.2.2
 
-* Ruby version
+### Hosting
+https://movies-api-challenge.herokuapp.com/
 
-* System dependencies
+### Authentication
+JWT Authentication
 
-* Configuration
+### Api Doc
+#### Signup
+    POST /api/signup
+* Data params example
+```json
+{ 
+    "name": "John",
+    "email": "john@email.com",
+    "password": "123456",
+    "password_confim": "123456",
+    
+ }
+```
+#### Login
+    POST api/auth/login
+* Data params example 
+```json
+{ 
+    "email": "john@email.com",
+    "password": "123456",
+ }
+```
+#### Movies
+    GET /api/movies                                                          
+    POST   /api/movies
+    GET    /api/movies/:id
+    PUT    /api/movies/:id                                                               
+    DELETE /api/movies/:id
+    
+ * Data params example (POST and PUT)
+ ```
+  { 
+    "title": "Pulp Fiction",
+    "release_year": 1995,
+    "casting": [1,2,3],
+    "directors": [4],
+    "producers": [5]
+    
+  }
 
-* Database creation
+```
+Casting, directors and producer are array of Integers with people's ids
 
-* Database initialization
+#### People
+    GET /api/people                                                          
+    POST   /api/people
+    GET    /api/people/:id
+    PUT    /api/people/:id                                                               
+    DELETE /api/people/:id
+    
+ * Data params example (POST and PUT)
+ ```json
+  { 
+    "first_name": "Quentin",
+    "last_name": "Tarantino",
+    "acted_movies": [1,2],
+    "directed_movies": [1,2],
+    "produced_movies": [1,4]
+    
+  }
 
-* How to run the test suite
+```
+acted_movies, directed_movies and produced_movies are array of integer with movies's ids
 
-* Services (job queues, cache servers, search engines, etc.)
 
-* Deployment instructions
+### Running tests
+This project uses rspec for testing. To run the tests, run 
+```sh
+$ rspec
+```
 
-* ...
