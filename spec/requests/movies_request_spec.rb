@@ -7,7 +7,7 @@ RSpec.describe "Movies", type: :request do
   let(:headers) { valid_headers }
 
   describe 'GET /movies' do
-    before { get '/movies' }
+    before { get '/api/movies' }
 
     it 'returns movies' do
       puts headers
@@ -21,7 +21,7 @@ RSpec.describe "Movies", type: :request do
   end
 
   describe 'GET /movies/:id' do
-    before { get "/movies/#{movie_id}" }
+    before { get "/api/movies/#{movie_id}" }
 
     context 'when the record exists' do
       it 'returns the movie' do
@@ -56,7 +56,7 @@ RSpec.describe "Movies", type: :request do
     let(:valid_attributes) { { title: 'Pulp Fiction', release_year: '1995' } }
 
     context 'when the request is valid' do
-      before { post '/movies', params: valid_attributes, headers: headers }
+      before { post '/api/movies', params: valid_attributes, headers: headers }
 
       it 'creates a movie' do
         expect(json['title']).to eq('Pulp Fiction')
@@ -69,7 +69,7 @@ RSpec.describe "Movies", type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post '/movies', params: { title: '' }, headers: headers }
+      before { post '/api/movies', params: { title: '' }, headers: headers }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -84,7 +84,7 @@ RSpec.describe "Movies", type: :request do
 
   describe 'PUT /movies/:id' do
     let(:valid_attributes) { { title: 'Inception', release_year: 2010 } }
-    before { put "/movies/#{movie_id}", params: valid_attributes, headers: headers }
+    before { put "/api/movies/#{movie_id}", params: valid_attributes, headers: headers }
 
     context 'when the record exists' do
       it 'updates the record' do
@@ -111,7 +111,7 @@ RSpec.describe "Movies", type: :request do
   end
 
   describe 'DELETE /todos/:id' do
-    before { delete "/movies/#{movie_id}", headers: headers }
+    before { delete "/api/movies/#{movie_id}", headers: headers }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)
